@@ -1,0 +1,138 @@
+🔹 PART 1: WITHOUT MAC BINDING (Dynamic DHCP)
+🔸 Step 1: Install dnsmasq (On Server)
+sudo apt update
+sudo apt install dnsmasq 
+
+
+Check status:
+
+sudo systemctl status dnsmasq
+
+🔸 Step 2: Stop Services Before Configuration
+sudo systemctl stop dnsmasq
+sudo service network-manager stop
+
+🔸 Step 3: Configure dnsmasq
+
+Open config file:
+
+sudo nano /etc/dnsmasq.conf
+
+1️⃣ Set Interface
+
+Search for:
+
+#interface=
+
+
+Uncomment and set your Ethernet name:
+
+interface=enp0s25
+
+
+(Use ip a to check your interface name)
+
+2️⃣ Set DHCP Range
+
+Search:
+
+#dhcp-range=
+
+
+Uncomment and set:
+
+dhcp-range=192.168.0.6,192.168.0.50,255.255.255.0,12h
+
+
+Save and exit (CTRL + X → Y → Enter)
+
+🔸 Step 4: Assign Static IP to Server
+sudo ifconfig enp0s25 192.168.0.5 netmask 255.255.255.0
+
+
+Check:
+
+ifconfig
+
+
+Server IP should be:
+
+192.168.0.5
+
+🔸 Step 5: Restart Services
+sudo service network-manager start
+sudo systemctl start dnsmasq
+
+
+Check status:
+
+sudo systemctl status dnsmasq
+
+🔸 Step 6: On Client Machine
+
+Restart network or reboot client:
+
+sudo systemctl restart NetworkManager
+
+
+Check IP:
+
+ifconfig
+
+
+✅ Client IP should be between:
+
+192.168.0.6 – 192.168.0.50
+
+🔹 PART 2: WITH MAC BINDING (Static IP for Specific Client)
+🔸 Step 1: Get Client MAC Address
+
+On Client:
+
+ip a
+
+
+Example MAC:
+
+18:60:24:89:cc:89
+
+🔸 Step 2: Edit dnsmasq.conf (On Server)
+sudo nano /etc/dnsmasq.conf
+
+
+Search:
+
+#dhcp-host=
+
+
+Add this line:
+
+dhcp-host=18:60:24:89:cc:89,192.168.0.10
+
+
+👉 Format:
+
+dhcp-host=MAC_ADDRESS,IP_ADDRESS
+
+
+Save and exit.
+
+🔸 Step 3: Restart dnsmasq
+sudo systemctl restart dnsmasq
+
+🔸 Step 4: Renew Client IP
+
+On Client:
+
+sudo dhclient -r
+sudo dhclient
+
+
+Check IP:
+
+ifconfig
+
+
+✅ Client will always get:
+
+192.168.0.10

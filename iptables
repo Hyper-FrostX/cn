@@ -1,0 +1,66 @@
+🔎 Step 1: Find Your Wireless Interface Name
+
+Run:
+
+ip a
+
+You will see something like:
+
+wlp2s0
+wlan0
+
+👉 That is your wireless interface.
+
+Example:
+
+wlp2s0
+📶 Step 2: Assign IP Address (If Creating Your Own Wireless LAN)
+
+If all systems are connected to same Wi-Fi router, you can either:
+
+Option A: Use Router DHCP (Easy Way)
+
+Just connect all PCs to same Wi-Fi.
+Check IP:
+
+ip a
+Option B: Assign Static IP Manually
+
+On each system:
+
+sudo ifconfig wlp2s0 10.10.10.1 netmask 255.255.255.0 up
+
+(Use .1, .2, .3 for different systems)
+
+🌐 Step 3: Test Connectivity
+
+From PC1:
+
+ping 10.10.10.3
+
+If ping works ✅ LAN is ready.
+
+📡 Step 4: Monitor Traffic on Wireless
+
+On firewall node:
+
+sudo tcpdump -i wlp2s0
+
+Now ping from another PC.
+
+You will see ICMP packets.
+
+🔥 Step 5: Apply Firewall Rules (Same as Wired)
+
+Everything remains SAME.
+
+Drop all traffic:
+sudo iptables -P INPUT DROP
+sudo iptables -P OUTPUT DROP
+sudo iptables -P FORWARD DROP
+Block particular IP:
+sudo iptables -I INPUT -s 10.10.10.1 -j REJECT
+Block particular MAC:
+sudo iptables -A INPUT -m mac --mac-source 6c:02:e0:6c:48:33 -j REJECT
+Block only ping:
+sudo iptables -I INPUT -p icmp -j DROP

@@ -1,0 +1,123 @@
+CN Lab Program 1
+Aim
+
+Create a LAN using Star Topology and check connectivity using IP address and ping command.
+
+Step 1: Connect the Network
+
+Take a switch (4 or 8 port).
+
+Take Ethernet cables.
+
+Connect each PC to the switch.
+
+Example:
+
+PC1  ──┐
+PC2  ──┤
+PC3  ──┤── Switch
+PC4  ──┘
+
+✔ This forms Star Topology.
+
+Step 2: Check Switch LED
+
+After connecting cables:
+
+Green LED → connection is correct
+
+Red/Orange → cable or port problem
+
+Step 3: Set IP Address (GUI Method)
+
+On each PC:
+
+Click Top Right Corner (Network Icon)
+
+Open Settings
+
+Go to Network
+
+Select Wired Connection
+
+Open IPv4
+
+Change
+
+Automatic (DHCP)  →  Manual
+
+Enter IP address.
+
+Example for 3 PCs:
+
+PC	IP Address	Netmask
+PC1	10.10.10.81	255.0.0.0
+PC2	10.10.10.90	255.0.0.0
+PC3	10.10.10.91	255.0.0.0
+
+Click Apply.
+
+Step 4: Check IP Address Using Terminal
+
+Open Terminal and type:
+
+ifconfig
+
+Example output:
+
+enp0s25: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>
+inet 10.10.10.81
+netmask 255.0.0.0
+Step 5: Set IP Address Using Command (Alternative Method)
+
+Instead of GUI you can use terminal:
+
+sudo ifconfig enp0s25 10.10.10.90 netmask 255.0.0.0
+
+Enter admin password.
+
+Check again:
+
+ifconfig
+Step 6: Check Connectivity Using Ping
+
+From PC1, ping PC2:
+
+ping 10.10.10.90
+
+Output:
+
+64 bytes from 10.10.10.90: icmp_seq=1 ttl=64 time=0.3 ms
+
+Ping PC3:
+
+ping 10.10.10.91
+
+Expected output:
+
+6 packets transmitted
+6 received
+0% packet loss
+
+✔ This means LAN connectivity is successful.
+
+Step 7: Repeat With Different Class IP
+
+You can repeat with:
+
+Class A
+Range: 1.0.0.0 – 126.255.255.255
+Example: 10.10.10.x
+Netmask: 255.0.0.0
+Class B
+Range: 128.0.0.0 – 191.255.255.255
+Example: 128.10.10.x
+Netmask: 255.255.0.0
+Class C
+Range: 192.0.0.0 – 223.255.255.255
+Example: 192.168.1.x
+Netmask: 255.255.255.0
+Commands Used
+ifconfig
+sudo ifconfig <interface> <ip address> netmask <netmask>
+ping <ip address>

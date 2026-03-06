@@ -1,0 +1,129 @@
+Program 10: Proxy Server Setup & SSH Port Forwarding
+System Requirement
+
+2 Computers (Machine A and Machine B)
+
+Linux (Ubuntu/Kali)
+
+LAN or same WiFi network
+
+PART 1 — Install Required Tools
+
+Run on BOTH machines
+
+sudo apt update
+sudo apt install squid
+sudo apt install lynx
+
+Check installation:
+
+squid -v
+lynx -version
+PART 2 — Configure IP Address
+Machine 1
+sudo ifconfig enp4s0 10.0.0.1 netmask 255.255.255.0
+Machine 2
+sudo ifconfig enp4s0 10.0.0.2 netmask 255.255.255.0
+
+Check:
+
+ifconfig
+
+Test connection:
+
+From Machine 2
+
+ping 10.0.0.1
+PART 3 — Configure Proxy Server
+
+On both machines
+
+Set proxy port 3128
+
+export http_proxy=http://localhost:3128
+
+Check variable:
+
+echo $http_proxy
+PART 4 — Test Proxy Using Lynx
+
+Open website using terminal browser
+
+lynx http://gnu.org
+
+You should see GNU website in terminal.
+
+This confirms Proxy Server working.
+
+PART 5 — Create Local Web Server (Machine 1)
+
+Create directory
+
+mkdir /tmp/website
+
+Go inside
+
+cd /tmp/website
+
+Create webpage
+
+echo "Hi There" > index.html
+
+Check file
+
+cat index.html
+PART 6 — Start Python Web Server
+
+Run:
+
+python3 -m http.server 8000 --bind 127.0.0.1
+
+Output should show:
+
+Serving HTTP on 127.0.0.1 port 8000
+
+Important:
+
+⚠️ This server is ONLY accessible locally on Machine 1.
+
+PART 7 — Create SSH Tunnel (Machine 2)
+
+Now access Machine 1 web server using SSH Port Forwarding
+
+Run on Machine 2
+
+ssh user@10.0.0.1 -v -L 127.0.0.1:6000:127.0.0.1:8000
+
+Explanation:
+
+Part	Meaning
+ssh user@10.0.0.1	connect to Machine 1
+-L	Local port forwarding
+6000	client port
+8000	server web port
+PART 8 — Access the Web Server
+
+On Machine 2
+
+Run:
+
+lynx http://127.0.0.1:6000
+
+Output:
+
+Hi There
+
+This means SSH port forwarding works.
+
+Final Output (Write in Record)
+Hi There
+Diagram (for Viva)
+Machine 2 (Client)
+        |
+     SSH Tunnel
+        |
+127.0.0.1:6000
+        |
+Machine 1 (Server)
+127.0.0.1:8000
+   Python Web Server

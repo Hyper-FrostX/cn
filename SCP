@@ -1,0 +1,105 @@
+Requirements
+
+2 Linux PCs
+
+PC1 → Server
+
+PC2 → Client
+
+LAN cable or same Wi-Fi network
+
+OpenSSH installed
+
+1️⃣ Connect Both PCs to Same Network
+
+Connect using LAN cable or same Wi-Fi.
+
+Check IP address on both PCs:
+
+ip a
+
+Example:
+
+Server → 192.168.0.101
+Client → 192.168.0.102
+
+2️⃣ Test Network Connectivity
+
+From Client:
+
+ping 192.168.0.101
+
+If ping works → network is OK.
+
+3️⃣ Install SSH
+On Server (PC1)
+sudo apt update
+sudo apt install openssh-server -y
+sudo systemctl start ssh
+sudo systemctl enable ssh
+
+Check:
+
+sudo systemctl status ssh
+On Client (PC2)
+
+Usually already installed, otherwise:
+
+sudo apt install openssh-client -y
+4️⃣ Create User (Server)
+sudo adduser secureuser
+5️⃣ Test SSH Login (Password Authentication)
+
+From Client:
+
+ssh secureuser@192.168.0.101
+
+Enter password.
+
+Remote login successful.
+
+Exit:
+
+exit
+6️⃣ Generate SSH Key (Client)
+ssh-keygen
+
+Press Enter for all prompts.
+
+This creates:
+
+~/.ssh/id_rsa
+~/.ssh/id_rsa.pub
+7️⃣ Copy Public Key to Server
+ssh-copy-id secureuser@192.168.0.101
+
+Enter password once.
+
+8️⃣ Test Passwordless SSH Login
+ssh secureuser@192.168.0.101
+
+Now it logs in without password.
+
+Exit:
+
+exit
+9️⃣ Secure File Transfer Using SCP
+Upload File (Client → Server)
+
+Create file:
+
+echo "Hello SSH SCP" > file1.txt
+
+Transfer file:
+
+scp file1.txt secureuser@192.168.0.101:/home/secureuser/
+Download File (Server → Client)
+
+From client:
+
+scp secureuser@192.168.0.101:/home/secureuser/file1.txt .
+
+. = current directory.
+
+🔟 Verify File
+ls

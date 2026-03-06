@@ -1,0 +1,141 @@
+Experiment: Wireless LAN using WDS (Range Extender)
+Aim
+
+To configure a Wireless LAN using two Access Points and implement WDS (Wireless Distributed System).
+
+Procedure
+Step 1: Reset Router-A
+
+Press the reset button on Router-A for 10–15 seconds.
+
+Step 2: Connect Router-A to PC
+
+Connect the router to PC using LAN cable.
+
+Check IP using command:
+
+ipconfig
+
+Note the Default Gateway (usually 192.168.0.1).
+
+Step 3: Login to Router-A
+
+Open browser.
+
+Type:
+
+http://192.168.0.1
+
+Login using:
+
+Username: admin
+Password: admin
+Step 4: Configure Wireless Settings
+
+Go to:
+
+Wireless → Basic Settings
+
+Set:
+
+SSID : Router-A
+
+Save the settings.
+
+Step 5: Set Wireless Password
+
+Go to:
+
+Wireless → Wireless Security
+
+Set:
+
+Security Mode : WPA2-PSK
+Password : (any 8 characters)
+
+Click Save.
+
+Step 6: Check DHCP Settings
+
+Go to:
+
+DHCP Settings
+
+Verify the IP range:
+
+Start IP : 192.168.0.100
+End IP   : 192.168.0.199
+
+Save settings.
+
+Configure Router-B (Range Extender)
+Step 7: Reset Router-B
+
+Press reset button for 10–15 seconds.
+
+Step 8: Login to Router-B
+
+Connect Router-B to PC.
+
+Open browser:
+
+http://192.168.0.1
+
+Login with:
+
+admin / admin
+Step 9: Change Operation Mode
+
+Go to:
+
+Operation Mode
+
+Select:
+
+Range Extender Mode
+
+Save and reboot.
+
+Step 10: Scan Wireless Networks
+
+Go to:
+
+Wireless → Scan
+
+Click Scan.
+
+List of networks will appear.
+
+Step 11: Connect to Router-A
+
+Select:
+
+SSID : Router-A
+
+Click Connect.
+
+Enter the password of Router-A.
+
+Click Save.
+
+Verification
+Step 12: Check IP Address
+
+On PC run:
+
+ipconfig
+
+IP should be in range:
+
+192.168.0.100 – 192.168.0.199
+Step 13: Test Connectivity
+
+Run ping command:
+
+ping 192.168.0.102
+
+If reply is received, connection is successful.
+
+Result
+
+Wireless LAN is successfully configured using WDS Range Extender mode.
